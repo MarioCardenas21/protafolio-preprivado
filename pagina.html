@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area del portafolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">Mario Francisco Cardenas Gómez</a>
+    <nav aria-label="Navegacion principal">
+      <a href="index.html#areas">Áreas</a>
+      <a href="#imagenes">Imágenes</a>
+      <a href="#reflexion">Reflexión</a>
+    </nav>
+  </header>
+
+  <main class="detail-shell">
+    <a class="back-link" href="index.html#areas">Volver a áreas</a>
+
+    <section class="detail-hero">
+      <div>
+        <span class="eyebrow" id="areaCode">Área</span>
+        <h1 id="areaTitle">Area del portafolio</h1>
+        <p id="areaIntro">Resumen de evidencias y aprendizaje del curso.</p>
+      </div>
+      <aside class="folder-note">
+        <span>Contenido del área</span>
+        <strong>5 ejercicios documentados</strong>
+      </aside>
+    </section>
+
+    <section class="detail-layout">
+      <article class="content-panel">
+        <span class="eyebrow">Resumen</span>
+        <h2>Descripción del área</h2>
+        <p id="areaDescription"></p>
+      </article>
+
+      <article class="content-panel">
+        <span class="eyebrow">Evidencias</span>
+        <h2>Lo que contiene</h2>
+        <ul class="clean-list" id="evidenceList"></ul>
+      </article>
+    </section>
+
+    <section class="section compact" id="imagenes">
+      <div class="section-heading">
+        <span class="eyebrow">Ejercicios</span>
+        <h2>5 ejercicios del área</h2>
+        <p>
+          Cada ejercicio presenta una evidencia visual principal y una síntesis
+          del trabajo realizado, destacando el razonamiento, el procedimiento y
+          el resultado obtenido.
+        </p>
+      </div>
+
+      <div class="exercise-list" id="exerciseList"></div>
+    </section>
+
+    <section class="reflection" id="reflexion">
+      <span class="eyebrow">Reflexión</span>
+      <h2>Aprendizaje logrado</h2>
+      <p id="areaReflection"></p>
+    </section>
+  </main>
+
+  <div class="image-modal" id="imageModal" aria-hidden="true" role="dialog" aria-label="Imagen ampliada">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar imagen">Cerrar</button>
+    <img id="modalImage" alt="">
+  </div>
+
+  <script>
+    const areas = {
+      "precalculo-5": {
+        code: "01",
+        title: "Precálculo 5",
+        intro: "Fortalecimiento de las bases matemáticas y análisis de funciones fundamentales.",
+        folder: "imagenes/precalculo-5",
+        description: "Recopilación de ejercicios enfocados en el dominio de funciones algebraicas, trigonométricas y trascendentales, esenciales para el desarrollo del cálculo superior.",
+        evidence: ["Análisis de funciones", "Resolución de identidades", "Modelado matemático"],
+        reflection: "El trabajo en precálculo consolidó herramientas indispensables para interpretar expresiones, reconocer patrones y preparar soluciones matemáticas con mayor orden y precisión.",
+        exercises: [
+          "Análisis de una función a partir de su comportamiento algebraico y representación gráfica.",
+          "Resolución estructurada de una identidad, cuidando la validez de cada transformación.",
+          "Aplicación de propiedades de funciones para simplificar expresiones y obtener resultados verificables.",
+          "Interpretación de relaciones matemáticas mediante procedimientos claros y justificables.",
+          "Integración de conceptos previos para resolver un ejercicio de cierre con razonamiento completo."
+        ]
+      },
+      "calculo-5": {
+        code: "02",
+        title: "Cálculo 5",
+        intro: "Dominio del cálculo diferencial e integral aplicado a la resolución de problemas complejos.",
+        folder: "imagenes/calculo-5",
+        description: "Documentación de procesos de derivación e integración, aplicaciones geométricas y físicas, y el análisis de límites y continuidad en diversas variables.",
+        evidence: ["Cálculo de derivadas e integrales", "Aplicaciones en ingeniería", "Análisis de convergencia"],
+        reflection: "Esta área permitió conectar el desarrollo analítico con aplicaciones concretas, fortaleciendo la capacidad de plantear, ejecutar y comprobar procedimientos de cálculo.",
+        exercises: [
+          "Desarrollo de un límite o continuidad con énfasis en la justificación del método utilizado.",
+          "Aplicación de derivadas para analizar variación, pendiente o comportamiento de una función.",
+          "Resolución de una integral mediante técnica apropiada y verificación del resultado.",
+          "Interpretación de un problema aplicado donde el cálculo explica una situación técnica.",
+          "Síntesis de procedimientos diferenciales e integrales en un ejercicio integrador."
+        ]
+      },
+      "electronica-analogica": {
+        code: "03",
+        title: "Electrónica analógica",
+        intro: "Diseño y análisis de circuitos electrónicos basados en componentes semiconductores.",
+        folder: "imagenes/electronica-analogica",
+        description: "Estudio profundo de amplificadores, filtros y fuentes de alimentación, priorizando el comportamiento de señales continuas y el manejo de dispositivos como diodos y transistores.",
+        evidence: ["Diseño de amplificadores", "Pruebas de laboratorio", "Simulación de señales"],
+        reflection: "La electrónica analógica fortaleció la comprensión del comportamiento real de los componentes y la importancia de medir, comparar y ajustar resultados en circuitos físicos.",
+        exercises: [
+          "Análisis de un circuito con componentes semiconductores y condiciones de operación definidas.",
+          "Evaluación de una señal analógica considerando amplitud, respuesta y estabilidad.",
+          "Comprobación de valores eléctricos mediante medición o simulación del circuito.",
+          "Interpretación del funcionamiento de una etapa amplificadora o de filtrado.",
+          "Presentación de resultados técnicos con observaciones sobre desempeño y precisión."
+        ]
+      },
+      "electronica-digital": {
+        code: "04",
+        title: "Electrónica digital",
+        intro: "Implementación de sistemas lógicos y procesamiento de señales binarias.",
+        folder: "imagenes/electronica-digital",
+        description: "Desarrollo de soluciones mediante álgebra de Boole, diseño de circuitos combinacionales y secuenciales, y el uso de herramientas de simulación para validación lógica.",
+        evidence: ["Sistemas combinacionales", "Circuitos secuenciales", "Validación con tablas de verdad"],
+        reflection: "El trabajo digital permitió transformar condiciones lógicas en soluciones funcionales, reforzando la importancia de simplificar, validar y documentar cada diseño.",
+        exercises: [
+          "Representación de una condición lógica mediante expresión booleana.",
+          "Construcción o simplificación de un circuito combinacional a partir de sus entradas.",
+          "Validación de resultados mediante tabla de verdad o simulación lógica.",
+          "Análisis de una secuencia digital y su comportamiento ante cambios de estado.",
+          "Diseño final que integra lógica, comprobación y presentación ordenada del resultado."
+        ]
+      },
+      "fisica-1": {
+        code: "05",
+        title: "Física 1",
+        intro: "Fundamentos de mecánica clásica y leyes del movimiento.",
+        folder: "imagenes/fisica-1",
+        description: "Aplicación de las leyes de Newton, conservación de la energía y cinemática en la resolución de problemas físicos, apoyado en experimentación práctica.",
+        evidence: ["Dinámica y cinemática", "Conservación de energía", "Análisis vectorial"],
+        reflection: "Física 1 aportó una base sólida para describir fenómenos mecánicos con lenguaje matemático, relacionando datos, diagramas y principios físicos.",
+        exercises: [
+          "Resolución de un problema de movimiento con identificación de variables relevantes.",
+          "Análisis de fuerzas mediante diagrama y aplicación de las leyes de Newton.",
+          "Aplicación del principio de conservación de energía en una situación física.",
+          "Uso de vectores para representar magnitudes y orientar el procedimiento.",
+          "Interpretación de resultados para verificar coherencia física y unidades."
+        ]
+      },
+      "fisica-2": {
+        code: "06",
+        title: "Física 2",
+        intro: "Estudio de termodinámica, electromagnetismo y ondas.",
+        folder: "imagenes/fisica-2",
+        description: "Exploración de fenómenos físicos avanzados, incluyendo el comportamiento de campos eléctricos y magnéticos, así como los principios de la termodinámica aplicados a sistemas cerrados.",
+        evidence: ["Termodinámica aplicada", "Electromagnetismo", "Fenómenos ondulatorios"],
+        reflection: "Física 2 permitió ampliar el análisis hacia fenómenos menos visibles pero altamente aplicables, fortaleciendo la relación entre teoría, cálculo e interpretación técnica.",
+        exercises: [
+          "Estudio de una situación térmica con identificación de energía, calor o temperatura.",
+          "Análisis de campo eléctrico o magnético mediante relaciones físicas fundamentales.",
+          "Resolución de un ejercicio de ondas considerando frecuencia, longitud y propagación.",
+          "Aplicación de principios electromagnéticos en un caso con variables definidas.",
+          "Evaluación final de un fenómeno físico avanzado con explicación del resultado."
+        ]
+      },
+      "estadistica": {
+        code: "07",
+        title: "Estadística",
+        intro: "Interpretación de datos y toma de decisiones basada en análisis cuantitativo.",
+        folder: "imagenes/estadistica",
+        description: "Aplicación de técnicas descriptivas e inferenciales para la organización, resumen y análisis de conjuntos de datos, facilitando la comprensión de tendencias y patrones.",
+        evidence: ["Análisis descriptivo", "Distribuciones de frecuencia", "Pruebas de hipótesis"],
+        reflection: "La estadística fortaleció la capacidad de convertir datos en información útil, cuidando la presentación, interpretación y validez de las conclusiones.",
+        exercises: [
+          "Organización de datos en una estructura clara para facilitar su análisis.",
+          "Cálculo e interpretación de medidas de tendencia central y dispersión.",
+          "Construcción de una distribución o representación gráfica de los datos.",
+          "Análisis de resultados para identificar patrones, variabilidad o comportamiento.",
+          "Conclusión estadística basada en evidencia numérica y criterio interpretativo."
+        ]
+      },
+      "probabilidad": {
+        code: "08",
+        title: "Probabilidad",
+        intro: "Modelado de incertidumbre y análisis de eventos aleatorios.",
+        folder: "imagenes/probabilidad",
+        description: "Desarrollo de modelos probabilísticos para predecir la ocurrencia de eventos en sistemas técnicos y científicos, utilizando variables aleatorias y distribuciones teóricas.",
+        evidence: ["Cálculo de probabilidades", "Variables aleatorias", "Modelos de distribución"],
+        reflection: "Probabilidad permitió analizar la incertidumbre de forma estructurada, usando modelos y reglas para tomar decisiones con base en escenarios posibles.",
+        exercises: [
+          "Identificación de eventos y espacio muestral en una situación planteada.",
+          "Cálculo de probabilidad simple o compuesta mediante reglas fundamentales.",
+          "Aplicación de probabilidad condicional o independencia según el caso.",
+          "Uso de una variable aleatoria o distribución para modelar resultados.",
+          "Interpretación final del escenario probabilístico y su significado práctico."
+        ]
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get("area") || "precalculo-5";
+    const area = areas[key] || areas["precalculo-5"];
+
+    document.title = area.title + " | Portafolio";
+    document.getElementById("areaCode").textContent = "Área " + area.code;
+    document.getElementById("areaTitle").textContent = area.title;
+    document.getElementById("areaIntro").textContent = area.intro;
+    document.getElementById("areaDescription").textContent = area.description;
+    document.getElementById("areaReflection").textContent = area.reflection;
+
+    const evidenceList = document.getElementById("evidenceList");
+    area.evidence.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      evidenceList.appendChild(li);
+    });
+
+    const exerciseList = document.getElementById("exerciseList");
+    const imageExtensions = ["jpg", "png", "jpeg"];
+
+    for (let exercise = 1; exercise <= 5; exercise += 1) {
+      const article = document.createElement("article");
+      article.className = "exercise-card";
+
+      const header = document.createElement("div");
+      header.className = "exercise-header";
+      header.innerHTML = `
+        <span class="exercise-number">Ejercicio ${exercise}</span>
+        <h3>${area.title} - ejercicio ${exercise}</h3>
+        <p>${area.exercises[exercise - 1]}</p>
+      `;
+
+      const gallery = document.createElement("div");
+      gallery.className = "exercise-gallery";
+
+      const figure = document.createElement("figure");
+      const img = document.createElement("img");
+      const caption = document.createElement("figcaption");
+      let extensionIndex = 0;
+
+      img.src = `${area.folder}/ejercicio-${exercise}/imagen-1.${imageExtensions[extensionIndex]}`;
+      img.alt = `${area.title}, ejercicio ${exercise}, imagen 1`;
+      img.addEventListener("click", () => openImage(img.src, img.alt));
+      img.onerror = () => {
+        extensionIndex += 1;
+        if (extensionIndex < imageExtensions.length) {
+          img.src = `${area.folder}/ejercicio-${exercise}/imagen-1.${imageExtensions[extensionIndex]}`;
+          return;
+        }
+
+        figure.classList.add("empty-image");
+        img.remove();
+      };
+
+      caption.textContent = "Imagen del ejercicio";
+      figure.appendChild(img);
+      figure.appendChild(caption);
+      gallery.appendChild(figure);
+
+      article.appendChild(header);
+      article.appendChild(gallery);
+      exerciseList.appendChild(article);
+    }
+
+    const imageModal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    const modalClose = document.getElementById("modalClose");
+
+    function openImage(src, alt) {
+      modalImage.src = src;
+      modalImage.alt = alt;
+      imageModal.classList.add("is-open");
+      imageModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeImage() {
+      imageModal.classList.remove("is-open");
+      imageModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      modalImage.src = "";
+      modalImage.alt = "";
+    }
+
+    modalClose.addEventListener("click", closeImage);
+    imageModal.addEventListener("click", (event) => {
+      if (event.target === imageModal) {
+        closeImage();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && imageModal.classList.contains("is-open")) {
+        closeImage();
+      }
+    });
+  </script>
+</body>
+</html>
